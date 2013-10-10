@@ -4,19 +4,14 @@ require 'motion/project'
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'MotionData'
-  app.files = %w{
-    lib/motion_data/schema.rb
-    lib/motion_data/store_coordinator.rb
-    lib/motion_data/context.rb
-    lib/motion_data/predicate.rb
-    lib/motion_data/managed_object.rb
-    lib/motion_data/scope.rb
 
-    app/test_models.rb
-    app/app_delegate.rb
-  }
+  Dir.glob(File.join(File.dirname(__FILE__), 'lib/*.rb')).each do |file|
+    app.files.unshift(file)
+  end
+
   app.frameworks += %w{ CoreData }
 
+  app.vendor_project(File.expand_path(File.join(File.dirname(__FILE__), '../vendor/motion_data/ext')), :static)
   app.vendor_project('vendor/motion_data/ext', :static)
 end
 
